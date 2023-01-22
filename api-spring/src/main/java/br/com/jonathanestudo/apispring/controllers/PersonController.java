@@ -1,9 +1,10 @@
 package br.com.jonathanestudo.apispring.controllers;
 
-import br.com.jonathanestudo.apispring.model.Person;
+import br.com.jonathanestudo.apispring.data.vo.v1.PersonDTO;
 import br.com.jonathanestudo.apispring.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,42 +16,32 @@ public class PersonController {
     private PersonService personService;
 
 
-    @RequestMapping(
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public List<Person> findAll() throws Exception {
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<PersonDTO> findAll() throws Exception {
         return personService.findAll();
     }
 
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public Person findById(@PathVariable(value = "id") Long id) throws Exception {
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public PersonDTO findById(@PathVariable(value = "id") Long id) throws Exception {
         return personService.findById(id);
     }
 
-    @RequestMapping(
-            method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person create(@RequestBody Person person) throws Exception {
+    public PersonDTO create(@RequestBody PersonDTO person) throws Exception {
         return personService.create(person);
     }
 
-    @RequestMapping(
-            method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
+    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Person update(@RequestBody Person person) throws Exception {
+    public PersonDTO update(@RequestBody PersonDTO person) throws Exception {
         return personService.update(person);
     }
 
-    @RequestMapping(value = "/{id}",
-            method = RequestMethod.DELETE)
-    public void delete(@PathVariable Long id){
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
         personService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 
