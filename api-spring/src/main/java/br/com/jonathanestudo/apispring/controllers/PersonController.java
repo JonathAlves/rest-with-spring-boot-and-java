@@ -1,6 +1,6 @@
 package br.com.jonathanestudo.apispring.controllers;
 
-import br.com.jonathanestudo.apispring.data.vo.v1.PersonDTO;
+import br.com.jonathanestudo.apispring.data.dto.v1.PersonDTO;
 import br.com.jonathanestudo.apispring.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/api/person/v1")
 public class PersonController {
     @Autowired
     private PersonService personService;

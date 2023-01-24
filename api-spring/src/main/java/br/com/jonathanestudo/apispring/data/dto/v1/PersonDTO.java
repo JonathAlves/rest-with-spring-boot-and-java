@@ -1,4 +1,4 @@
-package br.com.jonathanestudo.apispring.data.vo.v1;
+package br.com.jonathanestudo.apispring.data.dto.v1;
 
 
 import java.io.Serial;

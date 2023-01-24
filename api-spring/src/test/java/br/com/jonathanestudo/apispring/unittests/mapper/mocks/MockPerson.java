@@ -1,6 +1,6 @@
 package br.com.jonathanestudo.apispring.unittests.mapper.mocks;
 
-import br.com.jonathanestudo.apispring.data.vo.v1.PersonDTO;
+import br.com.jonathanestudo.apispring.data.dto.v1.PersonDTO;
 import br.com.jonathanestudo.apispring.model.Person;
 
 import java.util.ArrayList;
