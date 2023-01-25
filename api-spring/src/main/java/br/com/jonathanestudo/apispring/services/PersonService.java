@@ -1,11 +1,14 @@
 package br.com.jonathanestudo.apispring.services;
 
+import br.com.jonathanestudo.apispring.controllers.PersonController;
 import br.com.jonathanestudo.apispring.data.dto.v1.PersonDTO;
 import br.com.jonathanestudo.apispring.exceptions.ResourceNotFoundException;
 import br.com.jonathanestudo.apispring.mapper.ApiMapper;
 import br.com.jonathanestudo.apispring.model.Person;
 import br.com.jonathanestudo.apispring.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,12 +29,13 @@ public class PersonService {
         return ApiMapper.parseListObjects(personRepository.findAll(), PersonDTO.class);
     }
 
-    public PersonDTO findById(Long id){
+    public PersonDTO findById(Long id) {
         logger.info("Finding one person!");
 
         var entity = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this id."));
-
-        return ApiMapper.parseObject(entity, PersonDTO.class);
+        PersonDTO personDTO = ApiMapper.parseObject(entity, PersonDTO.class);
+        personDTO.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+        return personDTO;
     }
 
     public PersonDTO create(PersonDTO person){
@@ -43,7 +47,7 @@ public class PersonService {
     public PersonDTO update(PersonDTO person){
         logger.info("Updating one person!");
 
-        var entity = personRepository.findById(person.getId())
+        var entity = personRepository.findById(person.getKey())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID."));
 
         if(entity.getFirstName() != null) entity.setFirstName(person.getFirstName());
