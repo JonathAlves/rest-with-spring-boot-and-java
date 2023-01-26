@@ -26,22 +26,27 @@ public class PersonService {
         if(personRepository.findAll().size() == 0){
             throw new ResourceNotFoundException("No records found in the repository.");
         }
-        return ApiMapper.parseListObjects(personRepository.findAll(), PersonDTO.class);
+        var persons = ApiMapper.parseListObjects(personRepository.findAll(), PersonDTO.class);
+        persons.forEach(p -> p.add(linkTo(methodOn(PersonController.class).findById(p.getKey())).withSelfRel()));
+
+        return persons;
     }
 
     public PersonDTO findById(Long id) {
         logger.info("Finding one person!");
 
         var entity = personRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No records found for this id."));
-        PersonDTO personDTO = ApiMapper.parseObject(entity, PersonDTO.class);
-        personDTO.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
-        return personDTO;
+        var dto = ApiMapper.parseObject(entity, PersonDTO.class);
+        dto.add(linkTo(methodOn(PersonController.class).findById(id)).withSelfRel());
+        return dto;
     }
 
     public PersonDTO create(PersonDTO person){
         logger.info("Creating one person!");
         var entity = ApiMapper.parseObject(person, Person.class);
-        return ApiMapper.parseObject(personRepository.save(entity), PersonDTO.class);
+        var dto = ApiMapper.parseObject(personRepository.save(entity), PersonDTO.class);
+        dto.add(linkTo(methodOn(PersonController.class).findById(dto.getKey())).withSelfRel());
+        return dto;
     }
 
     public PersonDTO update(PersonDTO person){
@@ -55,7 +60,9 @@ public class PersonService {
         if(entity.getAddress() != null) entity.setAddress(person.getAddress());
         if(entity.getGender() != null) entity.setGender(person.getGender());
 
-        return ApiMapper.parseObject(personRepository.save(entity), PersonDTO.class);
+        var dto = ApiMapper.parseObject(personRepository.save(entity), PersonDTO.class);
+        dto.add(linkTo(methodOn(PersonController.class).findById(dto.getKey())).withSelfRel());
+        return dto;
     }
 
     public void delete(Long id){
