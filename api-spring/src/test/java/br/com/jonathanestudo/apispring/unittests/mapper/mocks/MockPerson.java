@@ -9,11 +9,11 @@ import java.util.List;
 public class MockPerson {
 
     public Person mockEntity() {
-        return mockEntity(0);
+        return mockEntity(1);
     }
 
     public PersonDTO mockDTO() {
-        return mockDTO(0);
+        return mockDTO(1);
     }
 
     public List<Person> mockEntityList() {

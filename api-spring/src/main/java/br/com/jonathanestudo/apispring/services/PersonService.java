@@ -2,6 +2,7 @@ package br.com.jonathanestudo.apispring.services;
 
 import br.com.jonathanestudo.apispring.controllers.PersonController;
 import br.com.jonathanestudo.apispring.data.dto.v1.PersonDTO;
+import br.com.jonathanestudo.apispring.exceptions.RequiredObjectIsNullException;
 import br.com.jonathanestudo.apispring.exceptions.ResourceNotFoundException;
 import br.com.jonathanestudo.apispring.mapper.ApiMapper;
 import br.com.jonathanestudo.apispring.model.Person;
@@ -43,6 +44,7 @@ public class PersonService {
 
     public PersonDTO create(PersonDTO person){
         logger.info("Creating one person!");
+        if(person == null) throw new RequiredObjectIsNullException();
         var entity = ApiMapper.parseObject(person, Person.class);
         var dto = ApiMapper.parseObject(personRepository.save(entity), PersonDTO.class);
         dto.add(linkTo(methodOn(PersonController.class).findById(dto.getKey())).withSelfRel());
@@ -51,7 +53,7 @@ public class PersonService {
 
     public PersonDTO update(PersonDTO person){
         logger.info("Updating one person!");
-
+        if(person == null) throw new RequiredObjectIsNullException();
         var entity = personRepository.findById(person.getKey())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this ID."));
 
