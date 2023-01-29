@@ -7,12 +7,11 @@ import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
 
-@JsonPropertyOrder({"id", "author", "launch_date", "price", "title"})
-public class BookDTO extends RepresentationModel implements Serializable {
+@JsonPropertyOrder({"id", "author", "launchDate", "price", "title"})
+public class BookDTO extends RepresentationModel<BookDTO> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -21,7 +20,7 @@ public class BookDTO extends RepresentationModel implements Serializable {
     @JsonProperty("id")
     private Integer key;
     private String author;
-    private LocalDateTime launch_date;
+    private Date launchDate;
     private Double price;
     private String title;
 
@@ -43,12 +42,12 @@ public class BookDTO extends RepresentationModel implements Serializable {
         this.author = author;
     }
 
-    public LocalDateTime getLaunch_date() {
-        return launch_date;
+    public Date getLaunchDate() {
+        return launchDate;
     }
 
-    public void setLaunch_date(LocalDateTime launch_date) {
-        this.launch_date = launch_date;
+    public void setLaunchDate(Date launchDate) {
+        this.launchDate = launchDate;
     }
 
     public Double getPrice() {
@@ -73,11 +72,11 @@ public class BookDTO extends RepresentationModel implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         BookDTO bookDTO = (BookDTO) o;
-        return Objects.equals(key, bookDTO.key) && Objects.equals(author, bookDTO.author) && Objects.equals(launch_date, bookDTO.launch_date) && Objects.equals(price, bookDTO.price) && Objects.equals(title, bookDTO.title);
+        return Objects.equals(key, bookDTO.key) && Objects.equals(author, bookDTO.author) && Objects.equals(launchDate, bookDTO.launchDate) && Objects.equals(price, bookDTO.price) && Objects.equals(title, bookDTO.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), key, author, launch_date, price, title);
+        return Objects.hash(super.hashCode(), key, author, launchDate, price, title);
     }
 }

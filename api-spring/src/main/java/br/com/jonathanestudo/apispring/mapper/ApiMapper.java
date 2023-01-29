@@ -9,6 +9,7 @@ import java.util.List;
 public class ApiMapper {
     private static final Mapper mapper = DozerBeanMapperBuilder.buildDefault();
 
+
     public static <Origin, Destiny> Destiny parseObject(Origin origin, Class<Destiny> destination){
         return mapper.map(origin, destination);
     }
