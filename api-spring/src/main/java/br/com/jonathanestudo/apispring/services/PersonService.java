@@ -24,7 +24,7 @@ public class PersonService {
 
     public List<PersonDTO> findAll(){
         logger.info("Finding all people!");
-        if(personRepository.findAll().size() == 0){
+        if(personRepository.findAll().isEmpty()){
             throw new ResourceNotFoundException("No records found in the repository.");
         }
         var persons = ApiMapper.parseListObjects(personRepository.findAll(), PersonDTO.class);
