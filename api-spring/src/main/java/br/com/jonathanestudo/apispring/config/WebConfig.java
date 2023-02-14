@@ -1,10 +1,12 @@
 package br.com.jonathanestudo.apispring.config;
 
 import br.com.jonathanestudo.apispring.serialization.converter.YamlJacksonToHttpMessageConverter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
@@ -12,10 +14,21 @@ import java.util.List;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
     private static final MediaType MEDIA_TYPE_APPLICATION_YAML = MediaType.valueOf("application/x-yaml");
+    @Value("${cors.originPatterns:default}")
+    private String corsOriginPatterns = "";
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         converters.add(new YamlJacksonToHttpMessageConverter());
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        var allowedOrigins = corsOriginPatterns.split(",");
+        registry.addMapping("/**")
+                .allowedMethods("*")
+                .allowedOrigins(allowedOrigins)
+                .allowCredentials(true);
     }
 
     @Override
